@@ -1,0 +1,7 @@
+main: glorydark.nukkit.LanguageMain
+name: "LanguageAPI"
+description: "LanguageAPI"
+author: "glorydark"
+version: "${pom.version}"
+api: ["1.0.0"]
+load: POSTWORLD
