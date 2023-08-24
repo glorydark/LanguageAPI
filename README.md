@@ -31,9 +31,13 @@ LanguageMain.getLanguageMain().addLanguage("test_category", language);
 # How to get a translation
 ## Methods
 public String getPlayerLanguageData(Player player)
+
 public String getTranslation(Player player, String category, String key)
+
 public String getTranslation(Player player, String category, String key, String defaultValue)
+
 public String getTranslation(String languageCode, String category, String key)
+
 public String getTranslation(String languageCode, String category, String key, String defaultValue)
 ## Example
 ```java
