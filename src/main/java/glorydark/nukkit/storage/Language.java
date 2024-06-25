@@ -17,6 +17,10 @@ public class Language {
     }
 
     public void addLanguageData(String languageCode, LanguageData data) {
+        if (data == null) {
+            LanguageMain.getInstance().getLogger().warning("Null translation data is loaded!");
+            return;
+        }
         this.translations.put(languageCode, data);
     }
 

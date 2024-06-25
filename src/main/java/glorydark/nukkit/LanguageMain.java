@@ -2,11 +2,12 @@ package glorydark.nukkit;
 
 import cn.nukkit.Player;
 import cn.nukkit.event.Listener;
+import cn.nukkit.plugin.Plugin;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import glorydark.nukkit.storage.Language;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author glorydark
@@ -15,16 +16,16 @@ import java.util.HashMap;
 public class LanguageMain extends PluginBase implements Listener {
 
     public static String defaultLanguage;
-    private static LanguageMain languageMain;
-    private final HashMap<String, Language> languages = new HashMap<>();
+    private static LanguageMain instance;
+    private final ConcurrentHashMap<String, Language> languages = new ConcurrentHashMap<>();
 
-    public static LanguageMain getLanguageMain() {
-        return languageMain;
+    public static LanguageMain getInstance() {
+        return instance;
     }
 
     @Override
     public void onEnable() {
-        languageMain = this;
+        instance = this;
         this.saveDefaultConfig();
         this.saveResource("language_code_list.json", false);
         defaultLanguage = new Config(this.getDataFolder().getPath() + "/config.yml", Config.YAML).getString("default_language", "en_US");
@@ -36,23 +37,38 @@ public class LanguageMain extends PluginBase implements Listener {
         return player.getLoginChainData().getLanguageCode();
     }
 
-    public String getTranslation(Player player, String category, String key, Object... replacements) {
-        return this.getTranslation(this.getPlayerLanguageData(player), category, key, replacements);
+    public String getTranslation(Plugin plugin, Player player, String key, Object... replacements) {
+        return this.getTranslation(plugin, this.getPlayerLanguageData(player), key, replacements);
     }
 
-    public String getTranslation(String languageCode, String category, String key, Object... replacements) {
-        if (this.languages.containsKey(category)) {
-            return this.languages.get(category).getLanguageData(languageCode).getTranslation(key, replacements);
+    public String getTranslation(Plugin plugin, String languageCode, String key, Object... replacements) {
+        return getTranslation(plugin.getName(), languageCode, key, replacements);
+    }
+
+    public String getTranslation(String categoryName, String languageCode, String key, Object... replacements) {
+        if (this.languages.containsKey(categoryName)) {
+            return this.languages.get(categoryName).getLanguageData(languageCode).getTranslation(key, replacements);
         } else {
             return key;
         }
     }
 
-    public void addLanguage(String category, Language language) {
-        this.languages.put(category, language);
+    public void addLanguage(Plugin plugin, Language language) {
+        this.addLanguage(plugin.getName(), language);
     }
 
-    public void unloadLanguage(String category) {
-        this.languages.remove(category);
+    public void addLanguage(String categoryName, Language language) {
+        if (this.languages.containsKey(categoryName)) {
+            this.getLogger().warning("Found a duplicate category: " + categoryName + ". Trying to replace it.");
+        }
+        this.languages.put(categoryName, language);
+    }
+
+    public void clearLanguage(Plugin plugin) {
+        this.languages.remove(plugin.getName());
+    }
+
+    public void clearLanguage(String categoryName) {
+        this.languages.remove(categoryName);
     }
 }
