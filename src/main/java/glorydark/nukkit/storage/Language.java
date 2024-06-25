@@ -1,5 +1,7 @@
 package glorydark.nukkit.storage;
 
+import glorydark.nukkit.LanguageMain;
+
 import java.util.HashMap;
 
 /**
@@ -19,6 +21,6 @@ public class Language {
     }
 
     public LanguageData getLanguageData(String languageCode) {
-        return this.translations.get(languageCode);
+        return this.translations.getOrDefault(languageCode, this.translations.getOrDefault(LanguageMain.defaultLanguage, new LanguageData()));
     }
 }

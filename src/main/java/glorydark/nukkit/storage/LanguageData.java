@@ -51,6 +51,7 @@ public class LanguageData {
 
     public String getTranslation(String key, Object... replacements) {
         String text = this.translations.getOrDefault(key, this.translations.getOrDefault(LanguageMain.defaultLanguage, key));
+        text = text.replace("\\n", "\n");
         return new ReplacementContainer(text, replacements).getText();
     }
 }

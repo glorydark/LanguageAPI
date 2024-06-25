@@ -1,6 +1,17 @@
 # TranslationAPI
 Basic TranslationAPI for Nukkit
 
+# How to use
+请自行将版本号进行更改！
+```xml
+<dependency>
+    <groupId>glorydark.nukkit</groupId>
+    <artifactId>LanguageAPI</artifactId>
+    <version>1.0.5</version>
+    <scope>provided</scope>
+</dependency>
+```
+
 # How to add a language
 ## Step 1
 ```java
@@ -34,11 +45,8 @@ public String getPlayerLanguageData(Player player)
 
 public String getTranslation(Player player, String category, String key)
 
-public String getTranslation(Player player, String category, String key, String defaultValue)
-
 public String getTranslation(String languageCode, String category, String key)
 
-public String getTranslation(String languageCode, String category, String key, String defaultValue)
 ## Example
 ```java
 LanguageMain.getLanguageMain().getTranslation("zh_CN", "test_category", "test_entry");
