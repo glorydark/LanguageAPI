@@ -3,6 +3,7 @@ package glorydark.nukkit.storage;
 import glorydark.nukkit.LanguageMain;
 import glorydark.nukkit.exception.LoadDataException;
 import glorydark.nukkit.provider.PropertiesProvider;
+import glorydark.nukkit.utils.ReplacementContainer;
 
 import java.io.File;
 import java.util.HashMap;
@@ -23,28 +24,15 @@ public class LanguageData {
         this.translations = translations;
     }
 
-    public void addTranslationEntry(String key, String value) {
-        translations.put(key, value);
-    }
-
-    public String getTranslation(String key) {
-        return translations.getOrDefault(key, translations.getOrDefault(LanguageMain.defaultLanguage, key));
-    }
-
-    public String getTranslation(String key, String defaultValue) {
-        return translations.getOrDefault(key, translations.getOrDefault(LanguageMain.defaultLanguage, defaultValue));
-    }
-
     /**
-     *
      * @param category It divides different language translation collections into different categories. E.g. skywars, lobby, ...
-     * @param file The dictionary that are needed to load, which contains various properties files. E.g. zh_cn.properties.
+     * @param file     The dictionary that are needed to load, which contains various properties files. E.g. zh_cn.properties.
      */
     public static void loadLanguageFromDictionary(String category, File file) throws LoadDataException {
         Language language = new Language();
-        if(file.isDirectory()){
+        if (file.isDirectory()) {
             File[] listFiles = file.listFiles();
-            if(listFiles != null) {
+            if (listFiles != null) {
                 for (File listFile : listFiles) {
                     language.addLanguageData(listFile.getName().replace(".properties", ""), new PropertiesProvider(listFile).parse());
                 }
@@ -55,5 +43,14 @@ public class LanguageData {
         } else {
             throw new LoadDataException("File is not a category");
         }
+    }
+
+    public void addTranslationEntry(String key, String value) {
+        this.translations.put(key, value);
+    }
+
+    public String getTranslation(String key, String... replacements) {
+        String text = this.translations.getOrDefault(key, this.translations.getOrDefault(LanguageMain.defaultLanguage, key));
+        return new ReplacementContainer(text, replacements).getText();
     }
 }

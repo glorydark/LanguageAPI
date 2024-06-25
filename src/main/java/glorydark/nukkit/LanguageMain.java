@@ -1,9 +1,7 @@
 package glorydark.nukkit;
 
 import cn.nukkit.Player;
-import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
-import cn.nukkit.event.player.PlayerLocallyInitializedEvent;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import glorydark.nukkit.storage.Language;
@@ -16,18 +14,20 @@ import java.util.HashMap;
  */
 public class LanguageMain extends PluginBase implements Listener {
 
+    public static String defaultLanguage;
+    private static LanguageMain languageMain;
     private final HashMap<String, Language> languages = new HashMap<>();
 
-    public static String defaultLanguage;
-
-    private static LanguageMain languageMain;
+    public static LanguageMain getLanguageMain() {
+        return languageMain;
+    }
 
     @Override
     public void onEnable() {
         languageMain = this;
         this.saveDefaultConfig();
         this.saveResource("language_code_list.json", false);
-        defaultLanguage = new Config(this.getDataFolder().getPath() + "/config.yml", Config.YAML).getString("default_language", "zh_CN");
+        defaultLanguage = new Config(this.getDataFolder().getPath() + "/config.yml", Config.YAML).getString("default_language", "en_US");
         this.getLogger().info("LanguageAPI Enabled!");
         this.getServer().getPluginManager().registerEvents(this, this);
     }
@@ -37,22 +37,14 @@ public class LanguageMain extends PluginBase implements Listener {
     }
 
     public String getTranslation(Player player, String category, String key) {
-        return this.getTranslation(player, category, key, key);
-    }
-
-    public String getTranslation(Player player, String category, String key, String defaultValue) {
-        return this.getTranslation(this.getPlayerLanguageData(player), category, key, defaultValue);
+        return this.getTranslation(this.getPlayerLanguageData(player), category, key);
     }
 
     public String getTranslation(String languageCode, String category, String key) {
-        return this.getTranslation(languageCode, category, key, key);
-    }
-
-    public String getTranslation(String languageCode, String category, String key, String defaultValue) {
-        if(this.languages.containsKey(category)){
-            return this.languages.get(category).getLanguageData(languageCode).getTranslation(key, defaultValue);
-        }else{
-            return defaultValue;
+        if (this.languages.containsKey(category)) {
+            return this.languages.get(category).getLanguageData(languageCode).getTranslation(key);
+        } else {
+            return key;
         }
     }
 
@@ -60,7 +52,7 @@ public class LanguageMain extends PluginBase implements Listener {
         this.languages.put(category, language);
     }
 
-    public static LanguageMain getLanguageMain() {
-        return languageMain;
+    public void unloadLanguage(String category) {
+        this.languages.remove(category);
     }
 }

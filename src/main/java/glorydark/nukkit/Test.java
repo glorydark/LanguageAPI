@@ -9,11 +9,11 @@ import glorydark.nukkit.storage.LanguageData;
  */
 public class Test {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
     }
 
-    public void test(){
+    public void test() {
         Language language = new Language();
         LanguageData languageData = new LanguageData();
         languageData.addTranslationEntry("test_entry", "测试");

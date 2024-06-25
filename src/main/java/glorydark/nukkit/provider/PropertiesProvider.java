@@ -1,9 +1,7 @@
 package glorydark.nukkit.provider;
 
 import cn.nukkit.utils.Config;
-import glorydark.nukkit.LanguageMain;
 import glorydark.nukkit.exception.LoadDataException;
-import glorydark.nukkit.storage.Language;
 import glorydark.nukkit.storage.LanguageData;
 
 import java.io.File;
@@ -21,12 +19,12 @@ public class PropertiesProvider {
     }
 
     public LanguageData parse() throws LoadDataException {
-        if(file.getName().endsWith(".properties")) {
+        if (this.file.getName().endsWith(".properties")) {
             LanguageData data = new LanguageData();
-            new Config(file, Config.PROPERTIES).getAll().forEach((s, o) -> data.addTranslationEntry(s, String.valueOf(o)));
+            new Config(this.file, Config.PROPERTIES).getAll().forEach((s, o) -> data.addTranslationEntry(s, String.valueOf(o)));
             return data;
         } else {
-            throw new LoadDataException("Reading wrong-format files. File Name: "+ file.getName());
+            throw new LoadDataException("Reading wrong-format files. File Name: " + this.file.getName());
         }
     }
 }
