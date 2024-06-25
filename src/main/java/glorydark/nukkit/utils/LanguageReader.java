@@ -1,4 +1,4 @@
-package glorydark.nukkit.provider;
+package glorydark.nukkit.utils;
 
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.utils.Config;
@@ -13,13 +13,7 @@ import java.io.File;
  * @author glorydark
  * @date {2023/8/24} {18:17}
  */
-public class PropertiesProvider extends LanguageProvider {
-
-    protected File file;
-
-    public PropertiesProvider(File file) {
-        this.file = file;
-    }
+public abstract class LanguageReader {
 
     public static void loadLanguageFromDictionary(Plugin plugin, File file) throws LoadDataException {
         Language language = new Language();
@@ -27,7 +21,7 @@ public class PropertiesProvider extends LanguageProvider {
             File[] listFiles = file.listFiles();
             if (listFiles != null) {
                 for (File listFile : listFiles) {
-                    language.addLanguageData(listFile.getName().replace(".properties", ""), new PropertiesProvider(listFile).parse());
+                    language.addLanguageData(listFile.getName().substring(0, listFile.getName().lastIndexOf(".")), parse(listFile));
                 }
                 LanguageMain.getInstance().addLanguage(plugin, language);
             } else {
@@ -38,14 +32,14 @@ public class PropertiesProvider extends LanguageProvider {
         }
     }
 
-    public LanguageData parse() {
+    public static LanguageData parse(File file) {
         try {
-            if (this.file.getName().endsWith(".properties")) {
+            if (file.getName().endsWith(".properties")) {
                 LanguageData data = new LanguageData();
-                new Config(this.file, Config.PROPERTIES).getAll().forEach((s, o) -> data.addTranslationEntry(s, String.valueOf(o)));
+                new Config(file, Config.PROPERTIES).getAll().forEach((s, o) -> data.addTranslationEntry(s, String.valueOf(o)));
                 return data;
             } else {
-                throw new LoadDataException("Reading wrong-format files. File Name: " + this.file.getName());
+                throw new LoadDataException("Reading wrong-format files. File Name: " + file.getName());
             }
         } catch (Exception ignored) {
             return null;

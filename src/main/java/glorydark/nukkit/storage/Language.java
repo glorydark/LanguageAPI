@@ -27,4 +27,8 @@ public class Language {
     public LanguageData getLanguageData(String languageCode) {
         return this.translations.getOrDefault(languageCode, this.translations.getOrDefault(LanguageMain.defaultLanguage, new LanguageData()));
     }
+
+    public HashMap<String, LanguageData> getRawData() {
+        return translations;
+    }
 }

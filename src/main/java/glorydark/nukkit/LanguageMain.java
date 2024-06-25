@@ -5,6 +5,7 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
+import glorydark.nukkit.command.LanguageCommand;
 import glorydark.nukkit.storage.Language;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,6 +32,7 @@ public class LanguageMain extends PluginBase implements Listener {
         defaultLanguage = new Config(this.getDataFolder().getPath() + "/config.yml", Config.YAML).getString("default_language", "en_US");
         this.getLogger().info("LanguageAPI Enabled!");
         this.getServer().getPluginManager().registerEvents(this, this);
+        this.getServer().getCommandMap().register("", new LanguageCommand("lang"));
     }
 
     protected String getPlayerLanguageData(Player player) {
@@ -70,5 +72,9 @@ public class LanguageMain extends PluginBase implements Listener {
 
     public void clearLanguage(String categoryName) {
         this.languages.remove(categoryName);
+    }
+
+    public ConcurrentHashMap<String, Language> getLanguages() {
+        return languages;
     }
 }

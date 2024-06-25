@@ -1,8 +1,10 @@
 package glorydark.nukkit.storage;
 
 import glorydark.nukkit.LanguageMain;
+import glorydark.nukkit.utils.LanguageReader;
 import glorydark.nukkit.utils.ReplacementContainer;
 
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -21,6 +23,10 @@ public class LanguageData {
         this.translations = translations;
     }
 
+    public static LanguageData fromProperties(File file) {
+        return LanguageReader.parse(file);
+    }
+
     public void addTranslationEntry(String key, String value) {
         this.translations.put(key, value);
     }
@@ -29,5 +35,9 @@ public class LanguageData {
         String text = this.translations.getOrDefault(key, this.translations.getOrDefault(LanguageMain.defaultLanguage, key));
         text = text.replace("\\n", "\n");
         return new ReplacementContainer(text, replacements).getText();
+    }
+
+    public HashMap<String, String> getRawData() {
+        return translations;
     }
 }
