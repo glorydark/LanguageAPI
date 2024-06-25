@@ -8,20 +8,14 @@ import java.util.HashMap;
  */
 public class Language {
 
-    private final String name;
+    private HashMap<String, LanguageData> translations;
 
-    private final HashMap<String, LanguageData> translations = new HashMap<>();
-
-    public Language(String name) {
-        this.name = name;
+    public Language() {
+        this.translations = new HashMap<>();
     }
 
     public void addLanguageData(String languageCode, LanguageData data) {
         translations.put(languageCode, data);
-    }
-
-    public String getName() {
-        return name;
     }
 
     public LanguageData getLanguageData(String languageCode) {

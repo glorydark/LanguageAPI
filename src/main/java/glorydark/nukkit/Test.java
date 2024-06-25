@@ -14,7 +14,7 @@ public class Test {
     }
 
     public void test(){
-        Language language = new Language("test_category");
+        Language language = new Language();
         LanguageData languageData = new LanguageData();
         languageData.addTranslationEntry("test_entry", "测试");
         language.addLanguageData("zh_CN", languageData);

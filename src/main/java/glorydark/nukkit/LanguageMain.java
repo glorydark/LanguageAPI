@@ -49,8 +49,8 @@ public class LanguageMain extends PluginBase implements Listener {
     }
 
     public String getTranslation(String languageCode, String category, String key, String defaultValue) {
-        if(languages.containsKey(category)){
-            return languages.get(category).getLanguageData(languageCode).getTranslation(key, defaultValue);
+        if(this.languages.containsKey(category)){
+            return this.languages.get(category).getLanguageData(languageCode).getTranslation(key, defaultValue);
         }else{
             return defaultValue;
         }
