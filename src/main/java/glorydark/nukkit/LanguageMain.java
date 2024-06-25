@@ -36,13 +36,13 @@ public class LanguageMain extends PluginBase implements Listener {
         return player.getLoginChainData().getLanguageCode();
     }
 
-    public String getTranslation(Player player, String category, String key) {
-        return this.getTranslation(this.getPlayerLanguageData(player), category, key);
+    public String getTranslation(Player player, String category, String key, Object... replacements) {
+        return this.getTranslation(this.getPlayerLanguageData(player), category, key, replacements);
     }
 
-    public String getTranslation(String languageCode, String category, String key) {
+    public String getTranslation(String languageCode, String category, String key, Object... replacements) {
         if (this.languages.containsKey(category)) {
-            return this.languages.get(category).getLanguageData(languageCode).getTranslation(key);
+            return this.languages.get(category).getLanguageData(languageCode).getTranslation(key, replacements);
         } else {
             return key;
         }

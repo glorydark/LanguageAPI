@@ -49,7 +49,7 @@ public class LanguageData {
         this.translations.put(key, value);
     }
 
-    public String getTranslation(String key, String... replacements) {
+    public String getTranslation(String key, Object... replacements) {
         String text = this.translations.getOrDefault(key, this.translations.getOrDefault(LanguageMain.defaultLanguage, key));
         return new ReplacementContainer(text, replacements).getText();
     }
