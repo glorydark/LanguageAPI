@@ -25,7 +25,7 @@ public class LanguageData {
     }
 
     public String getTranslation(String key) {
-        return translations.getOrDefault(key, translations.getOrDefault(LanguageMain.defaultLanguage, LanguageMain.KEY_NOT_FOUND));
+        return translations.getOrDefault(key, translations.getOrDefault(LanguageMain.defaultLanguage, key));
     }
 
     public String getTranslation(String key, String defaultValue) {

@@ -7,7 +7,6 @@ import cn.nukkit.event.player.PlayerLocallyInitializedEvent;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import glorydark.nukkit.storage.Language;
-import glorydark.nukkit.storage.LanguageData;
 
 import java.util.HashMap;
 
@@ -17,9 +16,7 @@ import java.util.HashMap;
  */
 public class LanguageMain extends PluginBase implements Listener {
 
-    public static final String KEY_NOT_FOUND = "KEY_NOT_FOUND";
-
-    private final HashMap<String, Language> languageBase = new HashMap<>();
+    private final HashMap<String, Language> languages = new HashMap<>();
 
     public static String defaultLanguage;
 
@@ -35,38 +32,32 @@ public class LanguageMain extends PluginBase implements Listener {
         this.getServer().getPluginManager().registerEvents(this, this);
     }
 
-    @EventHandler
-    public void onJoin(PlayerLocallyInitializedEvent event){
-        event.getPlayer().sendMessage(event.getPlayer().getLoginChainData().getLanguageCode());
-        event.getPlayer().sendMessage(LanguageMain.getLanguageMain().getTranslation(event.getPlayer(), "test_category", "test_entry"));
-    }
-
-    public String getPlayerLanguageData(Player player) {
+    protected String getPlayerLanguageData(Player player) {
         return player.getLoginChainData().getLanguageCode();
     }
 
     public String getTranslation(Player player, String category, String key) {
-        return this.getTranslation(player, category, key, KEY_NOT_FOUND);
+        return this.getTranslation(player, category, key, key);
     }
 
     public String getTranslation(Player player, String category, String key, String defaultValue) {
-        return this.getTranslation(getPlayerLanguageData(player), category, key, defaultValue);
+        return this.getTranslation(this.getPlayerLanguageData(player), category, key, defaultValue);
     }
 
     public String getTranslation(String languageCode, String category, String key) {
-        return this.getTranslation(languageCode, category, key, KEY_NOT_FOUND);
+        return this.getTranslation(languageCode, category, key, key);
     }
 
     public String getTranslation(String languageCode, String category, String key, String defaultValue) {
-        if(languageBase.containsKey(category)){
-            return languageBase.get(category).getLanguageData(languageCode).getTranslation(key, defaultValue);
+        if(languages.containsKey(category)){
+            return languages.get(category).getLanguageData(languageCode).getTranslation(key, defaultValue);
         }else{
             return defaultValue;
         }
     }
 
     public void addLanguage(String category, Language language) {
-        this.languageBase.put(category, language);
+        this.languages.put(category, language);
     }
 
     public static LanguageMain getLanguageMain() {
