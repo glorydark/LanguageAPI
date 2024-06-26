@@ -6,6 +6,8 @@ import glorydark.nukkit.utils.ReplacementContainer;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author glorydark
@@ -13,10 +15,10 @@ import java.util.HashMap;
  */
 public class LanguageData {
 
-    private final HashMap<String, String> translations;
+    private final Map<String, String> translations;
 
     public LanguageData() {
-        this.translations = new HashMap<>();
+        this.translations = new ConcurrentHashMap<>();
     }
 
     public LanguageData(HashMap<String, String> translations) {
@@ -24,7 +26,7 @@ public class LanguageData {
     }
 
     public static LanguageData fromProperties(File file) {
-        return LanguageReader.parse(file);
+        return LanguageReader.loadLanguageDataFromProperties(file);
     }
 
     public void addTranslationEntry(String key, String value) {
@@ -37,7 +39,7 @@ public class LanguageData {
         return new ReplacementContainer(text, replacements).getText();
     }
 
-    public HashMap<String, String> getRawData() {
+    public Map<String, String> getRawData() {
         return translations;
     }
 }

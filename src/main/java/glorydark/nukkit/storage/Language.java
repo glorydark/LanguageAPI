@@ -2,7 +2,8 @@ package glorydark.nukkit.storage;
 
 import glorydark.nukkit.LanguageMain;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author glorydark
@@ -10,10 +11,10 @@ import java.util.HashMap;
  */
 public class Language {
 
-    private final HashMap<String, LanguageData> translations;
+    private final Map<String, LanguageData> translations;
 
     public Language() {
-        this.translations = new HashMap<>();
+        this.translations = new ConcurrentHashMap<>();
     }
 
     public void addLanguageData(String languageCode, LanguageData data) {
@@ -28,7 +29,7 @@ public class Language {
         return this.translations.getOrDefault(languageCode, this.translations.getOrDefault(LanguageMain.defaultLanguage, new LanguageData()));
     }
 
-    public HashMap<String, LanguageData> getRawData() {
+    public Map<String, LanguageData> getRawData() {
         return translations;
     }
 }
