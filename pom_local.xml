@@ -49,6 +49,7 @@
     </dependencies>
 
     <build>
+        <directory>E:/dependencies/moli-test-server/plugins/</directory> <!-- 指定输出目录 -->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
