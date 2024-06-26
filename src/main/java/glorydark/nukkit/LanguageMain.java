@@ -69,6 +69,10 @@ public class LanguageMain extends PluginBase implements Listener {
         return getTranslation(plugin.getName(), languageCode, key, replacements);
     }
 
+    public String getTranslation(String categoryName, Player player, String key, Object... replacements) {
+        return getTranslation(categoryName, this.getPlayerLanguageData(player), key, replacements);
+    }
+
     public String getTranslation(String categoryName, String languageCode, String key, Object... replacements) {
         String cacheKey = categoryName + ":" + languageCode + ":" + key;
         return translationCache.get(cacheKey, (Function<String, String>) o -> {

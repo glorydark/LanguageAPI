@@ -7,7 +7,7 @@ Basic TranslationAPI for Nukkit
 <dependency>
     <groupId>glorydark.nukkit</groupId>
     <artifactId>LanguageAPI</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.9</version>
     <scope>provided</scope>
 </dependency>
 ```
@@ -21,16 +21,15 @@ Language language = new Language("test_category");
 
 ## Step 2
 ```java
-LanguageData languageData = new LanguageData();
-
 // Then try to add entries to the language data
 // Way 1
-languageData.addTranslationEntry("test_entry", "test");
-// Way 2
-languageData = new PropertiesProvider(path+"/zh_CN.properties").parse();
-
-// Specify which language this is for
+LanguageData languageData = new LanguageData();
 language.addLanguageData("en_US", languageData);
+languageData.addTranslationEntry("test_entry", "test"); // or you can use LanguageData.fromProperties(File file)
+LanguageMain.getInstance().addLanguage(this, language);
+
+// Way 2: To load a whole directory and automatically identify the language code based on each file's name
+LanguageReader.loadLanguageFromDictionary(this, new File(path + "/languages"));
 ```
 
 ## Last Step
@@ -41,15 +40,20 @@ LanguageMain.getLanguageMain().addLanguage("test_category", language);
 
 # How to get a translation
 ## Methods
-public String getPlayerLanguageData(Player player)
+String getTranslation(Plugin plugin, Player player, String category, String key, Object... replacements)
 
-public String getTranslation(Player player, String category, String key)
+String getTranslation(String category, Player player, String category, String key, Object... replacements)
 
-public String getTranslation(String languageCode, String category, String key)
+String getTranslation(Plugin plugin, String languageCode, String category, String key, Object... replacements)
+
+String getTranslation(String category, String languageCode, String category, String key, Object... replacements)
 
 ## Example
 ```java
-LanguageMain.getLanguageMain().getTranslation("zh_CN", "test_category", "test_entry");
+// We offer variable-length argument lists for you to replace texts with your preference, e.g. %1% %2% ...
+LanguageMain.getLanguageMain().getTranslation(this, "zh_CN", "test_entry", "test replacement");
+LanguageMain.getLanguageMain().getTranslation("AntiRay", zh_CN", "test_entry");
+
 ```
 
 ## Language Code List From Vanilla ResourcePack
