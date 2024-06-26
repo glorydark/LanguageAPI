@@ -44,10 +44,9 @@ public class LanguageMain extends PluginBase implements Listener {
         Config config = new Config(this.getDataFolder().getPath() + "/config.yml", Config.YAML);
         defaultLanguage = config.getString("default_language", "en_US");
         forceDefaultLanguage = config.getBoolean("force_default_language", false);
-
         translationCache = Caffeine.newBuilder()
-                .maximumSize(1000) // 设置缓存的最大容量
-                .expireAfterWrite(10, TimeUnit.MINUTES) // 设置缓存项的过期时间
+                .maximumSize(config.getInt("max_cache_size", 1000)) // 设置缓存的最大容量
+                .expireAfterWrite(config.getInt("cache_expired_rate", 10), TimeUnit.MINUTES) // 设置缓存项的过期时间
                 .recordStats() // 启用统计信息
                 .build();
         this.getLogger().info("LanguageAPI Enabled!");

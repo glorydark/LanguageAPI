@@ -1,2 +1,4 @@
 default_language: "zh_CN"
 force_default_language: false
+max_cache_size: 1000
+cache_expired_rate: 10 # min
