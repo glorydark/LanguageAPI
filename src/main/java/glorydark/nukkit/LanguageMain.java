@@ -12,6 +12,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import glorydark.nukkit.command.LanguageCommand;
 import glorydark.nukkit.storage.Language;
 import glorydark.nukkit.storage.LanguageData;
+import glorydark.nukkit.utils.ReplacementContainer;
 import it.unimi.dsi.fastutil.Function;
 
 import java.util.ArrayList;
@@ -75,13 +76,15 @@ public class LanguageMain extends PluginBase implements Listener {
 
     public String getTranslation(String categoryName, String languageCode, String key, Object... replacements) {
         String cacheKey = categoryName + ":" + languageCode + ":" + key;
-        return translationCache.get(cacheKey, (Function<String, String>) o -> {
+        String result = translationCache.get(cacheKey, (Function<String, String>) o -> {
             if (languages.containsKey(categoryName)) {
-                return languages.get(categoryName).getLanguageData(languageCode).getTranslation(key, replacements);
+                return languages.get(categoryName).getLanguageData(languageCode).getText(key);
             } else {
                 return key;
             }
         });
+        result = new ReplacementContainer(result, replacements).processText();
+        return result;
     }
 
     public void addLanguage(Plugin plugin, Language language) {

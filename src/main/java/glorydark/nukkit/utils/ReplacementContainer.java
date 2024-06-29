@@ -10,11 +10,16 @@ public class ReplacementContainer {
     public ReplacementContainer(String text, Object... replacements) {
         this.text = text;
         for (int i = 1; i <= replacements.length; i++) {
-            this.text = this.text.replace("%" + i + "%", replacements[i - 1].toString());
+            Object object = replacements[i - 1];
+            if (object == null) {
+                continue;
+            }
+            this.text = this.text.replace("%" + i + "%", object.toString());
         }
+        this.text = this.text.replace("\\n", "\n");
     }
 
-    public String getText() {
+    public String processText() {
         return text;
     }
 

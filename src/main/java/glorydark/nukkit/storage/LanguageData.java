@@ -2,7 +2,6 @@ package glorydark.nukkit.storage;
 
 import glorydark.nukkit.LanguageMain;
 import glorydark.nukkit.utils.LanguageReader;
-import glorydark.nukkit.utils.ReplacementContainer;
 
 import java.io.File;
 import java.util.HashMap;
@@ -33,10 +32,8 @@ public class LanguageData {
         this.translations.put(key, value);
     }
 
-    public String getTranslation(String key, Object... replacements) {
-        String text = this.translations.getOrDefault(key, this.translations.getOrDefault(LanguageMain.defaultLanguage, key));
-        text = text.replace("\\n", "\n");
-        return new ReplacementContainer(text, replacements).getText();
+    public String getText(String key) {
+        return this.translations.getOrDefault(key, this.translations.getOrDefault(LanguageMain.defaultLanguage, key));
     }
 
     public Map<String, String> getRawData() {
