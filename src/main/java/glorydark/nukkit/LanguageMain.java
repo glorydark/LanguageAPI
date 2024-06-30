@@ -93,6 +93,7 @@ public class LanguageMain extends PluginBase implements Listener {
 
     public void addLanguage(String categoryName, Language language) {
         if (this.languages.containsKey(categoryName)) {
+            this.clearLanguage(categoryName);
             this.getLogger().warning("Found a duplicate category: " + categoryName + ". Trying to replace it and refresh all caches.");
         }
         this.languages.put(categoryName, language);
